@@ -1,0 +1,32 @@
+# Configuração do Supabase para Edge Functions
+# Este arquivo define apenas as configurações essenciais
+
+# Configurações específicas para Edge Functions
+# Define que estas funções não precisam de verificação JWT (webhooks públicos)
+[functions.mp-webhook]
+verify_jwt = false
+
+[functions.test-webhook]
+verify_jwt = false
+
+[functions.test-webhook-auth]
+verify_jwt = false
+
+[functions.test-webhook-final]
+verify_jwt = false
+
+# Outras Edge Functions que devem permanecer protegidas com JWT
+[functions.create-payment-preference]
+verify_jwt = true
+
+[functions.process-payment]
+verify_jwt = true
+
+[functions.get-mp-public-key]
+verify_jwt = true
+
+[functions.save-app-secrets]
+verify_jwt = true 
+
+[functions.delete-auth-user]
+verify_jwt = false 
