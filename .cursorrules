@@ -1,0 +1,67 @@
+# CURSOR RULES - BANCO DE MODELOS
+
+## 📋 DOCUMENTAÇÃO OBRIGATÓRIA
+
+SEMPRE consulte estes documentos antes de qualquer desenvolvimento:
+
+1. ANALISE_COMPLETA_SISTEMA_BANCO_MODELOS.md - Análise geral do sistema
+2. ESTRUTURA_COMPLETA_BANCO_DADOS.md - Estrutura detalhada do banco
+3. INSTRUCOES_CURSOR_DESENVOLVIMENTO.md - Instruções para desenvolvimento
+
+## 🔧 CONFIGURAÇÕES DO PROJETO
+
+- Supabase Project ID: fgmdqayaqafxutbncypt
+- GitHub: https://github.com/imperiodigitalclub/bancodemodelos_cursor
+- Sempre usar estes IDs específicos
+
+## 📋 CHECKLIST OBRIGATÓRIO
+
+Antes de qualquer desenvolvimento:
+1. ✅ Ler documentação completa
+2. ✅ Verificar estrutura existente
+3. ✅ Analisar impactos
+4. ✅ Seguir padrões estabelecidos
+
+## 🗄️ REGRAS PARA BANCO DE DADOS
+
+- Sempre consultar ESTRUTURA_COMPLETA_BANCO_DADOS.md
+- Verificar se tabela já existe
+- Seguir padrões de nomenclatura snake_case
+- Implementar RLS obrigatório
+- Incluir campos padrão (id, created_at, updated_at, profile_id)
+
+## 🔧 REGRAS PARA EDGE FUNCTIONS
+
+- Verificar supabase/functions/ antes de criar nova
+- Sempre especificar projeto: --project-ref fgmdqayaqafxutbncypt
+- Implementar CORS e logs obrigatórios
+
+## 🎨 REGRAS PARA FRONTEND
+
+- Seguir estrutura de componentes estabelecida
+- Usar padrões de nomenclatura PascalCase
+- Implementar loading states e error handling
+- Sempre usar useAuth() e supabase client
+
+## 📝 ATUALIZAÇÃO DA DOCUMENTAÇÃO
+
+Após aprovação de nova funcionalidade:
+1. ✅ Funcionalidade testada e aprovada
+2. ✅ Código commitado no GitHub
+3. ✅ Deploy realizado no Supabase
+4. ✅ Atualizar documentação
+5. ✅ Commit das mudanças
+
+## 🚨 PONTOS CRÍTICOS
+
+NUNCA:
+- Modificar estrutura existente sem análise
+- Ignorar relacionamentos do banco
+- Pular validações de segurança
+- Esquecer logs e error handling
+
+SEMPRE:
+- Consultar documentação completa
+- Testar funcionalidades
+- Documentar mudanças
+- Usar projeto correto do Supabase 
