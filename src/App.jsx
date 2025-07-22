@@ -27,6 +27,7 @@ const DynamicPage = lazy(() => import('@/components/pages/DynamicPage'));
 const ModelRegistrationLandingPage = lazy(() => import('@/components/pages/ModelRegistrationLandingPage'));
 const ForgotPasswordPage = lazy(() => import('@/components/pages/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('@/components/pages/ResetPasswordPage'));
+const TesteMelhoriasPage = lazy(() => import('@/components/pages/TesteMelhoriasPage'));
 
 // Spinner de loading melhorado
 const PageLoadingSpinner = () => (
@@ -234,6 +235,7 @@ function App() {
           <Route path="dashboard" element={ <ProtectedRoute><DashboardPage /></ProtectedRoute> } />
           <Route path="favoritos" element={ <ProtectedRoute><FavoritesPage /></ProtectedRoute> } />
           <Route path="testepagamento" element={ <ProtectedRoute allowedRoles={['admin']}><PaymentTestPage /></ProtectedRoute> } />
+          <Route path="teste-melhorias" element={<TesteMelhoriasPage />} />
           <Route path="admin" element={ <ProtectedRoute allowedRoles={['admin']}><AdminDashboardPage /></ProtectedRoute> } />
           
           <Route path=":slug" element={<DynamicPage />} />

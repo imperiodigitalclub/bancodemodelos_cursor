@@ -358,7 +358,21 @@ const SubscriptionTab = ({ onNavigate }) => {
         return <div className="flex justify-center items-center p-8"><Loader2 className="h-8 w-8 animate-spin text-pink-500" /></div>;
     }
 
-    if (user?.subscription_type === 'pro' && new Date(user.subscription_expires_at) > new Date()) {
+    // Verificar se o usuário é PRO e a assinatura não expirou
+    const isUserPro = user?.subscription_type === 'pro';
+    const subscriptionExpired = user?.subscription_expires_at ? new Date(user.subscription_expires_at) <= new Date() : false;
+    
+    // Debug: verificar status da assinatura
+    console.log('[SubscriptionTab] Status da assinatura:', {
+        isUserPro,
+        subscriptionExpiresAt: user?.subscription_expires_at,
+        subscriptionExpired,
+        currentDate: new Date().toISOString(),
+        shouldShowSuccessCard: isUserPro && !subscriptionExpired
+    });
+    
+    if (isUserPro && !subscriptionExpired) {
+        console.log('[SubscriptionTab] Usuário é PRO, mostrando SubscriptionSuccessCard');
         return <SubscriptionSuccessCard user={user} onNavigate={onNavigate} />;
     }
     

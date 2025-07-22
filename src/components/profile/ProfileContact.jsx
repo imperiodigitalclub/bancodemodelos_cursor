@@ -3,12 +3,22 @@ import { Button } from '@/components/ui/button';
 import { Phone, Mail, Lock } from 'lucide-react';
 import { InstagramLogoIcon } from '@radix-ui/react-icons';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const ProfileContact = ({ profile, canViewPrivateInfo }) => {
   const navigate = useNavigate();
+  const { user, openAuthModal } = useAuth();
 
   const handleNavigate = (path, state) => {
     navigate(path, { state });
+  };
+
+  const handleVerContatos = () => {
+    if (!user) {
+      openAuthModal();
+    } else {
+      navigate('/dashboard', { state: { tab: 'subscription' } });
+    }
   };
   
   const LockedInfoItem = ({ icon, label }) => {
@@ -82,7 +92,7 @@ const ProfileContact = ({ profile, canViewPrivateInfo }) => {
             <LockedInfoItem icon={Mail} label="Email"/>
             {profile.instagram_handle && <LockedInfoItem icon={InstagramLogoIcon} label="Instagram"/>}
           </div>
-          <Button size="sm" className="btn-gradient text-white mt-2 w-full max-w-xs sm:w-auto" onClick={() => handleNavigate('/dashboard', {tab: 'subscription'})}>
+          <Button size="sm" className="btn-gradient text-white mt-2 w-full max-w-xs sm:w-auto" onClick={handleVerContatos}>
             <Lock className="h-4 w-4 mr-2"/> Ver Contatos
           </Button>
         </div>

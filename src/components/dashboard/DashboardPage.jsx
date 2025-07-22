@@ -119,7 +119,20 @@ const DashboardPage = () => {
                 </aside>
                 <main className="flex-1">
                     <div className="bg-white p-6 rounded-lg shadow-sm min-h-[60vh]">
-                        {ActiveComponent ? <ActiveComponent user={user} /> : <div>Selecione uma aba</div>}
+                        {ActiveComponent ? (
+                            <ActiveComponent 
+                                user={user} 
+                                onNavigate={(path, state, options) => {
+                                    if (options?.tab) {
+                                        handleTabChange(options.tab);
+                                    } else {
+                                        navigate(path, state);
+                                    }
+                                }}
+                            />
+                        ) : (
+                            <div>Selecione uma aba</div>
+                        )}
                     </div>
                 </main>
             </div>

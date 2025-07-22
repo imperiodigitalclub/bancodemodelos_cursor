@@ -23,6 +23,7 @@ import MatchingJobs from './MatchingJobs';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn, getFullName } from '@/lib/utils';
 import { useIsProActive } from '@/contexts/SmartSubscriptionContextSimple';
+import ProUpgradeCard from '@/components/ui/ProUpgradeCard';
 
 const OverviewTab = ({ user, onNavigate, onOpenVerificationModal }) => {
   const { toast } = useToast();
@@ -74,6 +75,15 @@ const OverviewTab = ({ user, onNavigate, onOpenVerificationModal }) => {
 
   const { isProActive: isUserProActive } = useIsProActive();
   const isContractor = ['contractor', 'photographer', 'admin'].includes(user.user_type);
+  
+  // Debug: verificar status do usuário
+  console.log('[OverviewTab] Status do usuário:', {
+    userType: user.user_type,
+    subscriptionType: user.subscription_type,
+    subscriptionExpiresAt: user.subscription_expires_at,
+    isUserProActive,
+    isExpired: user.subscription_expires_at ? new Date(user.subscription_expires_at) <= new Date() : null
+  });
 
   const colorClasses = {
     blue: { border: 'border-blue-500', bg: 'bg-blue-100', text: 'text-blue-600' },
@@ -111,27 +121,13 @@ const OverviewTab = ({ user, onNavigate, onOpenVerificationModal }) => {
       <div className="p-6 space-y-4 rounded-xl shadow-lg bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-600 text-white">
         <h2 className="text-2xl font-bold">Olá, {getFullName(user) || user.email}! 👋</h2>
         
-        {isUserProActive ? (
-            <Alert variant="default" className="bg-yellow-900/30 border-2 border-yellow-400 text-white rounded-xl shadow-lg">
-                <Crown className="h-5 w-5 text-yellow-400" />
-                <AlertTitle className="font-semibold text-white">Você é um membro PRO!</AlertTitle>
-                <AlertDescription className="text-yellow-100">Parabéns! Você tem acesso a todos os benefícios exclusivos da plataforma.</AlertDescription>
-            </Alert>
-        ) : (
-            <Alert variant="default" className="bg-purple-900/30 border-2 border-yellow-400 text-white rounded-xl shadow-lg">
-                <Crown className="h-5 w-5 text-yellow-400" />
-                <AlertTitle className="font-semibold text-white">Torne-se PRO e ganhe mais destaque!</AlertTitle>
-                <AlertDescription className="text-purple-100 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-                    <span className="flex-grow">
-                      {isContractor 
-                        ? 'Assinantes PRO podem ver os contatos das modelos e têm mais destaque.'
-                        : 'Assinantes PRO têm mais visibilidade e passam mais confiança.'
-                      }
-                    </span>
-                    <Button size="sm" className="w-full sm:w-auto flex-shrink-0 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold" onClick={() => onNavigate('/dashboard', null, { tab: 'subscription' })}>Fazer Upgrade</Button>
-                </AlertDescription>
-            </Alert>
-        )}
+        <ProUpgradeCard
+          userType={user.user_type}
+          isPro={isUserProActive}
+          onUpgrade={() => onNavigate('/dashboard', null, { tab: 'subscription' })}
+          className="mb-4"
+          user={user}
+        />
 
         {user.is_identity_verified ? (
               <Alert variant="default" className="bg-green-900/30 border-2 border-green-400 text-white rounded-xl shadow-lg">

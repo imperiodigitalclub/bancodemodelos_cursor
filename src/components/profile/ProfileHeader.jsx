@@ -191,7 +191,7 @@ const ProfileHeader = ({ profile, onOpenVerificationModal, onOpenHireModal }) =>
   
   let profileDetailsLine = '';
   if (isModelType) {
-    profileDetailsLine = [profile.model_physical_type, profile.model_profile_category, profileLocation].filter(Boolean).join(' - ');
+    profileDetailsLine = [profile.model_type, profile.model_physical_type, profileLocation].filter(Boolean).join(' - ');
   } else { 
     profileDetailsLine = [profile.company_name, profileLocation].filter(Boolean).join(' - ');
   }
