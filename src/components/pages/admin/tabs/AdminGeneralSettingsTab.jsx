@@ -87,6 +87,7 @@ const AdminGeneralSettingsTab = () => {
     { key: 'SITE_URL', label: 'URL do Site (para webhooks)', type: 'text', placeholder: 'Ex: http://localhost:5174 ou https://seudominio.com' },
     { key: 'SITE_DESCRIPTION', label: 'Descrição do Site (SEO)', type: 'textarea', placeholder: 'Descrição para mecanismos de busca...' },
     { key: 'CONTACT_EMAIL', label: 'E-mail de Contato Principal', type: 'email', placeholder: 'contato@example.com' },
+    { key: 'ADMIN_EMAIL', label: 'E-mail do Administrador (para notificações)', type: 'email', placeholder: 'admin@bancodemodelos.com.br' },
     { key: 'DEFAULT_USER_ROLE', label: 'Cargo Padrão para Novos Usuários', type: 'select', options: [
       {value: 'model', label: 'Modelo'}, 
       {value: 'contractor', label: 'Contratante'},
