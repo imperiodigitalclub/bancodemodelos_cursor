@@ -11,6 +11,7 @@ import { Loader2 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatCurrencyInput, unformatCurrency } from '@/lib/utils';
 import PaymentDisabledModal from '@/components/shared/PaymentDisabledModal';
+import { supabase } from '@/lib/supabaseClient';
 
 const HiringModal = ({ isOpen, onClose, modelProfile, jobDetails = null }) => {
   const { user, appSettings } = useAuth();
@@ -83,7 +84,72 @@ const HiringModal = ({ isOpen, onClose, modelProfile, jobDetails = null }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsPaymentDisabledModalOpen(true);
+    
+    // Validar dados
+    if (!formData.serviceDescription || !agreedCache) {
+      toast({ 
+        title: "Dados incompletos", 
+        description: "Preencha todos os campos obrigatórios.", 
+        variant: "destructive" 
+      });
+      return;
+    }
+    
+    // Verificar se o sistema de pagamento está configurado
+    if (!isPaymentSystemConfigured) {
+      setIsPaymentDisabledModalOpen(true);
+      return;
+    }
+    
+    try {
+      // Criar proposta direta
+      const proposalData = {
+        contractor_id: user.id,
+        model_id: modelProfile.id,
+        service_date: formData.serviceDateTime,
+        service_description: formData.serviceDescription,
+        work_interest_category: formData.workInterestCategory,
+        agreed_cache: unformatCurrency(agreedCache),
+        platform_fee_percentage: platformFeePercentage,
+        total_payable: totalPayable,
+        status: 'pending'
+      };
+      
+      // Inserir proposta na tabela direct_proposals
+      const { data: proposal, error } = await supabase
+        .from('direct_proposals')
+        .insert(proposalData)
+        .select()
+        .single();
+        
+      if (error) throw error;
+      
+      // Processar pagamento via Mercado Pago
+      const paymentData = {
+        amount: totalPayable,
+        description: `Contratação: ${modelProfile.name}`,
+        external_reference: proposal.id,
+        notification_url: `${window.location.origin}/api/payment-webhook`
+      };
+      
+      // Criar preferência de pagamento
+      const { data: preference, error: paymentError } = await supabase
+        .functions.invoke('create-payment-preference', {
+          body: paymentData
+        });
+        
+      if (paymentError) throw paymentError;
+      
+      // Redirecionar para pagamento
+      window.location.href = preference.init_point;
+      
+    } catch (error) {
+      toast({ 
+        title: "Erro ao processar contratação", 
+        description: error.message, 
+        variant: "destructive" 
+      });
+    }
   };
   
   const renderSubmitButton = () => {

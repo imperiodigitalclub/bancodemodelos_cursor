@@ -9,6 +9,8 @@ import GalleryManagementTab from './GalleryManagementTab';
 import VideoManagementTab from './VideoManagementTab';
 import MyProposalsTab from './MyProposalsTab';
 import MyContractsTab from './MyContractsTab';
+import ModelApplicationsTab from './ModelApplicationsTab';
+import ContractorJobsTab from './ContractorJobsTab';
 import ReviewsTab from './ReviewsTab';
 import SubscriptionTab from './subscription/SubscriptionTab';
 import NotificationsTab from './NotificationsTab';
@@ -22,6 +24,7 @@ const dashboardTabs = {
     { id: 'profile', label: 'Editar Perfil', icon: User, component: ProfileTab },
     { id: 'gallery', label: 'Galeria de Fotos', icon: Camera, component: GalleryManagementTab },
     { id: 'videos', label: 'Vídeos', icon: Camera, component: VideoManagementTab },
+    { id: 'applications', label: 'Minhas Candidaturas', icon: Briefcase, component: ModelApplicationsTab },
     { id: 'proposals', label: 'Minhas Propostas', icon: Briefcase, component: MyProposalsTab },
     { id: 'contracts', label: 'Contratos', icon: Briefcase, component: MyContractsTab },
     { id: 'reviews', label: 'Avaliações', icon: Star, component: ReviewsTab },
@@ -33,6 +36,7 @@ const dashboardTabs = {
   contractor: [
     { id: 'overview', label: 'Visão Geral', icon: LayoutDashboard, component: OverviewTab },
     { id: 'profile', label: 'Editar Perfil', icon: User, component: ProfileTab },
+    { id: 'jobs', label: 'Minhas Vagas', icon: Briefcase, component: ContractorJobsTab },
     { id: 'proposals', label: 'Propostas Enviadas', icon: Briefcase, component: MyProposalsTab },
     { id: 'contracts', label: 'Contratos', icon: Briefcase, component: MyContractsTab },
     { id: 'reviews', label: 'Avaliações', icon: Star, component: ReviewsTab },

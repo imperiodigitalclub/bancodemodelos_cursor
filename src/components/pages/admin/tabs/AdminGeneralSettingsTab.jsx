@@ -178,18 +178,18 @@ const AdminGeneralSettingsTab = () => {
               )}
               {field.type === 'select' && (
                  <Select
-                    value={settings[field.key] || ''}
-                    onValueChange={(value) => handleInputChange(field.key, value)}
-                  >
-                    <SelectTrigger id={field.key}>
-                      <SelectValue placeholder={field.placeholder || "Selecione uma opção"} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {field.options.map(option => (
-                        <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  value={settings[field.key] || ''}
+                  onValueChange={(value) => handleInputChange(field.key, value)}
+                >
+                  <SelectTrigger id={field.key}>
+                    <SelectValue placeholder={field.placeholder || "Selecione uma opção"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {field.options.map(option => (
+                      <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
             </div>
           ))}

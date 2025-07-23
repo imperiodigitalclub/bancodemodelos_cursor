@@ -67,11 +67,13 @@ const Header = () => {
     const modelSpecificTabs = [
       { id: 'gallery', label: 'Galeria de Fotos', icon: ImageIcon },
       { id: 'videos', label: 'Vídeos', icon: ImageIcon },
+      { id: 'applications', label: 'Minhas Candidaturas', icon: Briefcase },
       { id: 'proposals', label: 'Minhas Propostas', icon: Briefcase },
       { id: 'contracts', label: 'Contratos', icon: FileText },
     ];
     
     const contractorSpecificTabs = [
+      { id: 'jobs', label: 'Minhas Vagas', icon: Briefcase },
       { id: 'proposals', label: 'Propostas Enviadas', icon: Briefcase },
       { id: 'contracts', label: 'Contratos', icon: FileText },
     ];

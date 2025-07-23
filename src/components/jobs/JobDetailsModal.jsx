@@ -7,6 +7,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/supabaseClient';
 import { modelTypeOptions, modelPhysicalTypeOptions, workInterestsOptions } from '@/components/auth/data/authConstants';
 import { getFullName } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 const JobDetailsModal = ({ job, isOpen, onClose, onApplicationSuccess, onEditRequest }) => {
   const { user, openAuthModal } = useAuth();
@@ -201,15 +202,99 @@ const JobDetailsModal = ({ job, isOpen, onClose, onApplicationSuccess, onEditReq
             <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">{job.description || 'Nenhuma descrição fornecida.'}</p>
           </div>
 
-          {(job.required_model_type && job.required_model_type !== 'Indiferente' || job.required_model_profile && job.required_model_profile !== 'Indiferente' || job.specific_requirements) && (
+          {/* Perfil Desejado */}
+          {(job.required_model_type || job.required_model_profile || job.required_gender || job.required_model_physical_type || job.required_interests) && (
             <div className="border-t pt-6">
-              <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center"><ListChecks className="h-5 w-5 mr-2 text-pink-600"/>Requisitos</h4>
-              <ul className="list-disc list-inside space-y-1 text-gray-600">
+              <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center"><UserCheckIcon className="h-5 w-5 mr-2 text-pink-600"/>Perfil Desejado</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {job.required_model_type && job.required_model_type !== 'Indiferente' && (
-                  <li className="flex items-center"><Palette className="h-4 w-4 mr-2 text-gray-500"/>Tipo de Modelo: {getLabelFromOptions(modelTypeOptions, job.required_model_type)}</li>
+                  <div className="flex items-center text-gray-700">
+                    <Palette className="h-4 w-4 mr-2 text-gray-500"/>
+                    <span className="text-sm text-gray-500 mr-2">Tipo de Modelo:</span>
+                    <span className="font-medium">{getLabelFromOptions(modelTypeOptions, job.required_model_type)}</span>
+                  </div>
                 )}
                 {job.required_model_profile && job.required_model_profile !== 'Indiferente' && (
-                  <li className="flex items-center"><Tag className="h-4 w-4 mr-2 text-gray-500"/>Perfil Físico: {getLabelFromOptions(modelPhysicalTypeOptions, job.required_model_profile)}</li>
+                  <div className="flex items-center text-gray-700">
+                    <Tag className="h-4 w-4 mr-2 text-gray-500"/>
+                    <span className="text-sm text-gray-500 mr-2">Perfil Físico:</span>
+                    <span className="font-medium">{getLabelFromOptions(modelPhysicalTypeOptions, job.required_model_profile)}</span>
+                  </div>
+                )}
+                {job.required_gender && job.required_gender !== 'Indiferente' && (
+                  <div className="flex items-center text-gray-700">
+                    <UserCircle className="h-4 w-4 mr-2 text-gray-500"/>
+                    <span className="text-sm text-gray-500 mr-2">Gênero:</span>
+                    <span className="font-medium">{job.required_gender === 'feminino' ? 'Feminino' : job.required_gender === 'masculino' ? 'Masculino' : job.required_gender}</span>
+                  </div>
+                )}
+                {job.required_model_physical_type && job.required_model_physical_type !== 'Indiferente' && (
+                  <div className="flex items-center text-gray-700">
+                    <UserCheckIcon className="h-4 w-4 mr-2 text-gray-500"/>
+                    <span className="text-sm text-gray-500 mr-2">Tipo Físico:</span>
+                    <span className="font-medium">{job.required_model_physical_type}</span>
+                  </div>
+                )}
+              </div>
+              
+              {/* Interesses de Trabalho */}
+              {job.required_interests && job.required_interests.length > 0 && (
+                <div className="mt-4">
+                  <h5 className="text-sm font-medium text-gray-700 mb-2">Interesses de Trabalho:</h5>
+                  <div className="flex flex-wrap gap-2">
+                    {job.required_interests.map((interest, index) => {
+                      const interestOption = workInterestsOptions.find(opt => opt.value === interest);
+                      return (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {interestOption ? interestOption.label : interest}
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              
+              {/* Características do Modelo */}
+              {job.required_model_characteristics && job.required_model_characteristics.length > 0 && (
+                <div className="mt-4">
+                  <h5 className="text-sm font-medium text-gray-700 mb-2">Características Desejadas:</h5>
+                  <div className="flex flex-wrap gap-2">
+                    {job.required_model_characteristics.map((characteristic, index) => (
+                      <Badge key={index} variant="outline" className="text-xs">
+                        {characteristic}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Requisitos Específicos */}
+          {(job.required_model_type && job.required_model_type !== 'Indiferente' || job.required_model_profile && job.required_model_profile !== 'Indiferente' || job.specific_requirements) && (
+            <div className="border-t pt-6">
+              <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center"><ListChecks className="h-5 w-5 mr-2 text-pink-600"/>Requisitos Específicos</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600">
+                {job.required_height && (
+                  <li className="flex items-center"><Palette className="h-4 w-4 mr-2 text-gray-500"/>Altura: {job.required_height} cm</li>
+                )}
+                {job.required_weight && (
+                  <li className="flex items-center"><Tag className="h-4 w-4 mr-2 text-gray-500"/>Peso: {job.required_weight} kg</li>
+                )}
+                {job.required_bust && (
+                  <li className="flex items-center"><UserCheckIcon className="h-4 w-4 mr-2 text-gray-500"/>Busto: {job.required_bust} cm</li>
+                )}
+                {job.required_waist && (
+                  <li className="flex items-center"><UserCircle className="h-4 w-4 mr-2 text-gray-500"/>Cintura: {job.required_waist} cm</li>
+                )}
+                {job.required_hips && (
+                  <li className="flex items-center"><UserCheckIcon className="h-4 w-4 mr-2 text-gray-500"/>Quadril: {job.required_hips} cm</li>
+                )}
+                {job.required_eye_color && (
+                  <li className="flex items-center"><UserCircle className="h-4 w-4 mr-2 text-gray-500"/>Cor dos Olhos: {job.required_eye_color}</li>
+                )}
+                {job.required_shoe_size && (
+                  <li className="flex items-center"><UserCheckIcon className="h-4 w-4 mr-2 text-gray-500"/>Tamanho do Calçado: {job.required_shoe_size}</li>
                 )}
                 {job.specific_requirements && (
                   <li>{job.specific_requirements}</li>

@@ -72,11 +72,15 @@ const ModelApplicationsTab = ({ openJobDetailsModal }) => {
   };
   
   const handleViewJob = (job) => {
-    if (openJobDetailsModal) {
-      const formattedJob = { ...job, profiles: job.profiles };
-      openJobDetailsModal(formattedJob);
+    // Navegar para a página de vagas com o modal de detalhes aberto
+    if (onNavigate) {
+      onNavigate('/vagas', { openJobDetails: job.id });
     } else {
-      toast({ title: "Função não disponível", description: "Não foi possível abrir os detalhes da vaga.", variant: "destructive" });
+      toast({ 
+        title: "Função não disponível", 
+        description: "Não foi possível abrir os detalhes da vaga.", 
+        variant: "destructive" 
+      });
     }
   };
   

@@ -8,15 +8,41 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import ApplicantProfileModal from './ApplicantProfileModal';
 import { getFullName } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 const JobApplicantsModal = ({ job, isOpen, onClose, onNavigate }) => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatingApplicantId, setUpdatingApplicantId] = useState(null);
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+  const [updatingStatus, setUpdatingStatus] = useState(null);
+
+  // Buscar perfil do usuário atual
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!user) return;
+      
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (error) throw error;
+        setUserProfile(profile);
+      } catch (error) {
+        console.error('Erro ao buscar perfil:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [user]);
 
   const fetchApplicants = useCallback(async () => {
     if (!job) {
@@ -79,10 +105,59 @@ const JobApplicantsModal = ({ job, isOpen, onClose, onNavigate }) => {
     }
   };
 
-  const handleViewProfile = (application) => {
+  const handleViewProfile = async (application) => {
     if (application && application.profiles) {
-      setSelectedApplicant(application);
-      setIsProfileModalOpen(true);
+      try {
+        // Buscar fotos da tabela profile_photos
+        const { data: photos, error: photosError } = await supabase
+          .from('profile_photos')
+          .select('*')
+          .eq('profile_id', application.profiles.id)
+          .order('sort_order', { ascending: true })
+          .order('created_at', { ascending: false });
+
+        // Buscar vídeos da tabela profile_videos
+        const { data: videos, error: videosError } = await supabase
+          .from('profile_videos')
+          .select('*')
+          .eq('profile_id', application.profiles.id)
+          .order('sort_order', { ascending: true })
+          .order('created_at', { ascending: false });
+
+        if (photosError) console.error('Erro ao buscar fotos:', photosError);
+        if (videosError) console.error('Erro ao buscar vídeos:', videosError);
+
+        // Converter para formato esperado pelos componentes
+        const galleryPhotos = (photos || []).map(photo => ({
+          id: photo.id,
+          url: photo.image_url,
+          caption: photo.caption
+        }));
+
+        const galleryVideos = (videos || []).map(video => ({
+          id: video.id,
+          url: video.video_url,
+          thumbnail: video.thumbnail_url,
+          caption: video.caption
+        }));
+
+        // Adicionar fotos e vídeos ao perfil
+        const enrichedProfile = {
+          ...application.profiles,
+          gallery_photos: galleryPhotos,
+          videos: galleryVideos
+        };
+
+        setSelectedApplicant({
+          ...application,
+          profiles: enrichedProfile
+        });
+        setIsProfileModalOpen(true);
+      } catch (error) {
+        console.error('Erro ao buscar mídia do perfil:', error);
+        setSelectedApplicant(application);
+        setIsProfileModalOpen(true);
+      }
     } else {
       toast({ title: "Erro", description: "Não foi possível carregar o perfil do modelo.", variant: "destructive" });
     }
@@ -188,6 +263,7 @@ const JobApplicantsModal = ({ job, isOpen, onClose, onNavigate }) => {
             onAccept={(appId) => handleUpdateApplicationStatus(appId, 'accepted')}
             onReject={(appId) => handleUpdateApplicationStatus(appId, 'rejected')}
             isUpdating={updatingApplicantId === selectedApplicant.id}
+            userProfile={userProfile}
         />
     )}
     </>
