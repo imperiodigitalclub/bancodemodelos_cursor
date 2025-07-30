@@ -1,0 +1,2 @@
+[functions.delete-auth-user]
+verify_jwt = false 

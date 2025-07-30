@@ -4,6 +4,8 @@
 
 Este documento fornece instruções específicas para o Cursor sobre como utilizar a análise completa do sistema Banco de Modelos durante o desenvolvimento, garantindo que todas as decisões sejam baseadas no conhecimento completo da arquitetura existente.
 
+**STATUS ATUAL:** Sistema em produção com todas as funcionalidades principais implementadas e testadas.
+
 ---
 
 ## 🔧 CONFIGURAÇÕES DO PROJETO
@@ -362,6 +364,57 @@ export default function NovoComponente() {
 
 ---
 
+## 🔔 REGRAS PARA NOTIFICAÇÕES
+
+### **Sempre Implementar:**
+
+1. **Criação de Notificações:**
+   ```jsx
+   const { createNotification } = useCreateNotification()
+   
+   await createNotification(
+     userId,
+     'payment',
+     'Pagamento Aprovado!',
+     'Seu pagamento foi processado com sucesso.',
+     { amount: 100, transaction_id: '123' }
+   )
+   ```
+
+2. **Hook de Notificações:**
+   ```jsx
+   const { notifications, unreadCount, markAsRead } = useNotifications()
+   ```
+
+3. **Tempo Real:**
+   - Notificações em tempo real via Supabase Realtime
+   - Contagem automática de não lidas
+   - Marcação como lida
+
+---
+
+## 🎯 REGRAS PARA SISTEMA DE VAGAS
+
+### **Sempre Considerar:**
+
+1. **Tipos de Usuário:**
+   - Modelos podem se candidatar
+   - Contratantes podem publicar vagas
+   - Admins podem gerenciar tudo
+
+2. **Filtros e Busca:**
+   - Filtros por região
+   - Filtros por tipo de trabalho
+   - Filtros por características físicas
+   - Ordenação por relevância
+
+3. **Candidaturas:**
+   - Sistema de candidaturas
+   - Gestão de candidatos
+   - Notificações automáticas
+
+---
+
 ## 🔍 CHECKLIST DE QUALIDADE
 
 ### **Antes de Finalizar Qualquer Desenvolvimento:**
@@ -589,4 +642,6 @@ Seguindo estas instruções, o Cursor terá conhecimento completo do sistema Ban
 - Sempre usar o projeto Supabase correto: `fgmdqayaqafxutbncypt`
 - Sempre fazer commits para o repositório correto: `https://github.com/imperiodigitalclub/bancodemodelos_cursor`
 - Sempre atualizar a documentação após aprovação de novas funcionalidades
-- A análise completa do sistema é a base para qualquer desenvolvimento 
+- A análise completa do sistema é a base para qualquer desenvolvimento
+
+**STATUS DO SISTEMA:** ✅ PRODUÇÃO - Funcionando com todas as funcionalidades principais implementadas e testadas. 

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { LayoutDashboard, Users, Briefcase, BarChart2, Settings, FileText, Menu as MenuIcon, CreditCard, BellDot, Edit2, CheckSquare, DownloadCloud, Image, Zap, Mail, LayoutTemplate, Send, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Users, Briefcase, BarChart2, Settings, FileText, Menu as MenuIcon, CreditCard, BellDot, Edit2, CheckSquare, DownloadCloud, Image, Zap, Mail, LayoutTemplate, Send, Sparkles, Clock } from 'lucide-react';
 import AdminUsersTab from './tabs/AdminUsersTab';
 import AdminJobsTab from './tabs/AdminJobsTab';
 import AdminPagesTab from './tabs/AdminPagesTab';
@@ -20,6 +20,7 @@ import AdminEmailsTab from './tabs/AdminEmailsTab';
 import AdminLandingPagesTab from './tabs/AdminLandingPagesTab';
 import AdminBroadcastTab from './tabs/AdminBroadcastTab';
 import AdminFakeJobsTab from './tabs/AdminFakeJobsTab';
+import AdminExpiredJobsTab from './tabs/AdminExpiredJobsTab';
 import { useNavigate } from 'react-router-dom';
 
 const AdminDashboardPage = () => {
@@ -34,6 +35,7 @@ const AdminDashboardPage = () => {
     { id: 'withdrawals', label: 'Pedidos de Saque', icon: DownloadCloud, component: <AdminWithdrawalsTab /> },
     { id: 'jobs', label: 'Vagas', icon: Briefcase, component: <AdminJobsTab /> },
     { id: 'fake_jobs', label: 'Vagas Fake', icon: Sparkles, component: <AdminFakeJobsTab /> },
+    { id: 'expired_jobs', label: 'Vagas Expiradas', icon: Clock, component: <AdminExpiredJobsTab /> },
     { id: 'pages', label: 'Páginas', icon: FileText, component: <AdminPagesTab /> },
     { id: 'landing_pages', label: 'Landing Pages', icon: LayoutTemplate, component: <AdminLandingPagesTab /> },
     { id: 'menus', label: 'Menus', icon: MenuIcon, component: <AdminMenusTab /> },
